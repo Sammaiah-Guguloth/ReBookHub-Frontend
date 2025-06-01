@@ -5,6 +5,12 @@
 @tailwind components;
 @tailwind utilities;
 
+/* in global.css or index.css */
+html {
+    scroll-behavior: smooth;
+  }
+  
+
 
 * {
     margin: 0;

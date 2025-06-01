@@ -27,7 +27,8 @@ const Login = () => {
         toast.success("User logged in successfully");
         dispatch(setUser(response.data.user));
         dispatch(setIsLoggedIn(true));
-        navigate("/dashboard");
+        
+        location.pathname === "/login" ?  navigate("/dashboard") : navigate(-1);
       }
     }
     catch(error) {

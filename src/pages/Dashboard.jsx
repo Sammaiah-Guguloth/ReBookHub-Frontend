@@ -19,7 +19,7 @@ const Dashboard = () => {
   return (
     <div className="flex min-h-screen">
       {/* Sidebar */}
-      <div className={`fixed md:static h-full md:h-auto top-0 left-0  w-64 bg-white border-r shadow-md transition-transform duration-300 z-10 md:animate-slideLeft
+      <div className={`z-50 fixed md:static h-full md:h-auto top-0 left-0  w-64 bg-white border-r shadow-md transition-transform duration-300 md:animate-slideLeft
         ${isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}>
         <div className="flex justify-between items-center p-4 md:hidden">
           <h2 className="text-xl font-bold">Dashboard</h2>
@@ -50,7 +50,7 @@ const Dashboard = () => {
       </div>
 
       {/* Mobile Menu Button */}
-      <div className="md:hidden mb-4 absolute z-auto left-2">
+      <div className="md:hidden mb-4 absolute    left-2">
           <button onClick={toggleSidebar} className="text-gray-800">
             <LuArrowRightToLine size={40} />
           </button>

@@ -1,62 +1,78 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux'
-import toast from 'react-hot-toast';
-import { setLoading, setMyBooks } from '../redux/slices/myBooksSlice';
+import React, { useState, useEffect } from 'react';
 import axiosInstance from '../api/axios/axiosInstance';
 import { GET_MYBOOKS } from '../api/apis';
-import Spinner from "../components/Spinner"
-import Book from '../components/Book';
+import toast from 'react-hot-toast';
+import Spinner from '../components/Spinner';
+import BooksContainer from '../components/BooksContainer';
+import { FiAlertCircle } from 'react-icons/fi';
+import { BsBook } from 'react-icons/bs';
 
 const MyBooks = () => {
+  const [books, setBooks] = useState([]);
+  const [error, setError] = useState(null); 
+  const [loading, setLoading] = useState(true);
 
-  const dispatch = useDispatch();
-  const {loading , books , error} = useSelector((state) => state.mybooks);
+  const fetchBooks = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await axiosInstance.get(GET_MYBOOKS);
 
-  console.log("books ; " , books);
+      if (response.status === 200) {
+        setBooks(response.data.books);
+        toast.success("Books fetched successfully");
+      } else {
+        setError("Failed to fetch books.");
+        toast.error("Failed to fetch books");
+      }
+    } catch (error) {
+      console.error("Error fetching books:", error);
+      setError("Server not available. Please try again later.");
+      toast.error(error?.response?.data?.message || "Failed to fetch books");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchBooks = async() => {
-      try {
-        dispatch(setLoading(true));
-        const response = await axiosInstance(GET_MYBOOKS);
-        console.log("resp : " , response );
-        dispatch(setLoading(false));
-        if(response.status === 200){
-          dispatch(setMyBooks(response.data));
-          toast.success("Books fetched successfully");
-         }
-         else {
-          
-          toast.error("Error fetching books");
-         }
-      }
-      catch(error) {
-        console.log("error while fetching mybooks : " , error);
-        toast.error(error?.response?.response?.message);
-      }
-    }
     fetchBooks();
-  } , []);
-
-  console.log("myBooks : " , books)
-
-  // if(loading) {
-  //   return <>
-  //     <Spinner />
-  //   </>
-  // }
+  }, []);
 
   return (
-    <div>
-        {
-          temp.map((book , index) => (
-            <div key={index}>
-                <Book book = {book} />
-             </div>
-          ))
-        }
-    </div>
-  )
-}
+    <div className="p-4">
+      <h2 className="text-2xl font-semibold mb-4 text-center">My Books</h2>
 
-export default MyBooks
+      {/* Loading spinner */}
+      {loading && (
+        <div className="w-full h-screen mx-auto flex items-center justify-center mt-10">
+          <Spinner />
+        </div>
+      )}
+
+      {/* Error message */}
+      {!loading && error && (
+        <div className="flex items-center justify-center gap-3 text-red-600 font-semibold bg-red-50 border border-red-200 px-4 py-3 rounded-md w-full max-w-md mx-auto">
+          <FiAlertCircle className="text-xl" />
+          <span>{error}</span>
+        </div>
+      )}
+
+      {/* No books found */}
+      {!loading && !error && books.length === 0 && (
+        <div className="flex items-center justify-center gap-3 text-gray-600 font-medium bg-gray-100 border border-gray-200 px-4 py-3 rounded-md w-full max-w-md mx-auto">
+          <BsBook className="text-xl" />
+          <span>No books found.</span>
+        </div>
+      )}
+
+      {/* Display books */}
+      {!loading && !error && books.length > 0 && (
+        <div>
+          <BooksContainer books={books} />
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default MyBooks;

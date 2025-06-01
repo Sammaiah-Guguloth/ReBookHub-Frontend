@@ -17,6 +17,15 @@ import Profile from './pages/Profile'
 import MyBooks from './pages/MyBooks'
 import SoldBooks from './pages/SoldBooks'
 import AddBook from './pages/AddBook'
+import Checkout from './pages/Checkout'
+import SearchResults from './pages/SearchResults'
+import PaymentSuccess from './pages/PaymentSuccess'
+import SellerOrderPage from './pages/SellerOrderPage'
+import ShippingForm from './pages/ShippingForm'
+import TrackOrder from './pages/TrackOrder'
+import Orders from './pages/Orders'
+import HowItWorks from './pages/HowItWorks'
+import BooksByGenre from './pages/BooksByGenre'
 
 
 
@@ -28,16 +37,16 @@ const App = () => {
     dispatch(fetchUser());
   }, [dispatch]);
 
-  if (isLoading) {
-    return (
-      <div className='flex w-full justify-center mt-32 '>
-        <Spinner />
-      </div>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <div className='flex w-full justify-center mt-32 '>
+  //       <Spinner />
+  //     </div>
+  //   );
+  // }
 
   return (
-     <div className='font-sans'>
+     <div className='font-sans w-full'>
       
       <NavBar />
 
@@ -47,7 +56,7 @@ const App = () => {
         <Route path="*" element={<NotFound />} />
         <Route path='/login' element={<Login/>} />
         <Route path='/signup' element={<SignUp/>} />
-        <Route path='/about' element={<About/>} />
+        <Route path='/about' element={<HowItWorks/>} />
        
         <Route path='/otp' element={
           <OtpProtectedRoute>
@@ -65,8 +74,29 @@ const App = () => {
             <Route path='add-book' element={<AddBook />} />
             <Route path='my-books' element={<MyBooks />} />
             <Route path='sold-books' element={<SoldBooks/>} />
+            <Route path='orders' element={<Orders />} />
         </Route>
+
+        <Route path="/search" element={<SearchResults />} />
+
+        <Route path="/books/:genre" element={<BooksByGenre />} />
         
+       
+
+        <Route path="/checkout/:bookId" element={
+          <UserProtectedRoute>
+            <Checkout />
+          </UserProtectedRoute>  
+        }/>
+        <Route path='/payment-success' element={<PaymentSuccess />} />
+
+        <Route path='/seller/orders/:orderId' element={<SellerOrderPage />} />
+
+        <Route path='/seller/orders/:orderId/shipping' element={<ShippingForm/>} />
+
+        <Route path="/track-order/:trackingId" element={<TrackOrder />} />
+
+
 
       </Routes>
      </div>
