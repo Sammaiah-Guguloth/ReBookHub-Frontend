@@ -1,38 +1,65 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import HilightTextOrange from './HilightTextOrange';
-import KeyButton from './KeyButton';
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import HilightTextOrange from "./HilightTextOrange";
+import KeyButton from "./KeyButton";
 
 const featuredGenres = [
   {
-    name: 'Romance',
-    tagline: 'Fall in love with every page.',
-    image: "/images/genres/romance.jpg",
+    name: "Romance",
+    tagline: "Fall in love with every page.",
+    image: "/images/genres/romance.webp",
   },
   {
-    name: 'Thriller',
-    tagline: 'Twists, turns, and heart-pounding suspense.',
-    image: "/images/genres/thriller.jpg",
+    name: "Thriller",
+    tagline: "Twists, turns, and heart-pounding suspense.",
+    image: "/images/genres/thriller.webp",
   },
   {
-    name: 'Fantasy',
-    tagline: 'Enter worlds beyond imagination.',
-    image: "/images/genres/fantasy.jpg"
+    name: "Fantasy",
+    tagline: "Enter worlds beyond imagination.",
+    image: "/images/genres/fantasy.webp",
   },
   {
-    name: 'Science Fiction',
-    tagline: 'Where the future unfolds.',
-    image: "/images/genres/science_fiction.jpg"
+    name: "Science Fiction",
+    tagline: "Where the future unfolds.",
+    image: "/images/genres/science_fiction.webp",
   },
   {
-    name: 'Mystery',
-    tagline: 'Every clue leads to another question.',
-    image: "/images/genres/mystery.jpg"
+    name: "Mystery",
+    tagline: "Every clue leads to another question.",
+    image: "/images/genres/mystery.webp",
   },
 ];
 
 const allGenres = [
-  "Romance", "Thriller", "Science Fiction", "Fantasy", "Mystery", "Horror", "Non-fiction", "Biography", "Self-help", "Historical", "Adventure", "Comics", "Poetry", "Drama", "Philosophy", "Technology", "Art", "Business", "Education", "Spirituality", "Health & Fitness", "Politics", "Travel", "Cookbooks", "Children", "Religious", "Sports", "Other"
+  "Romance",
+  "Thriller",
+  "Science Fiction",
+  "Fantasy",
+  "Mystery",
+  "Horror",
+  "Non-fiction",
+  "Biography",
+  "Self-help",
+  "Historical",
+  "Adventure",
+  "Comics",
+  "Poetry",
+  "Drama",
+  "Philosophy",
+  "Technology",
+  "Art",
+  "Business",
+  "Education",
+  "Spirituality",
+  "Health & Fitness",
+  "Politics",
+  "Travel",
+  "Cookbooks",
+  "Children",
+  "Religious",
+  "Sports",
+  "Other",
 ];
 
 export default function GenreCarousel() {
@@ -59,17 +86,19 @@ export default function GenreCarousel() {
           <div
             key={index}
             className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-              index === current ? 'opacity-100 z-10' : 'opacity-0 z-0'
+              index === current ? "opacity-100 z-10" : "opacity-0 z-0"
             }`}
             style={{
               backgroundImage: `url(${genre.image})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
+              backgroundSize: "cover",
+              backgroundPosition: "center",
             }}
           >
             <div className="w-full h-full bg-black/40 flex items-center justify-center text-center text-white px-4">
               <div>
-                <h2 className="text-2xl sm:text-3xl md:text-7xl font-semibold"><HilightTextOrange>{genre.name}</HilightTextOrange></h2>
+                <h2 className="text-2xl sm:text-3xl md:text-7xl font-semibold">
+                  <HilightTextOrange>{genre.name}</HilightTextOrange>
+                </h2>
                 <p className="text-xs sm:text-base mt-2">{genre.tagline}</p>
                 <button
                   onClick={() => goToGenre(genre.name)}
@@ -89,7 +118,7 @@ export default function GenreCarousel() {
               key={index}
               onClick={() => setCurrent(index)}
               className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
-                current === index ? 'bg-white scale-125' : 'bg-gray-300'
+                current === index ? "bg-white scale-125" : "bg-gray-300"
               }`}
             />
           ))}
@@ -99,10 +128,8 @@ export default function GenreCarousel() {
       {/* Explore All Genres Button */}
       <div className="mt-6 text-center mx-auto animate-slideRight">
         <KeyButton>
-          <button
-            onClick={() => setShowAll(!showAll)}
-          >
-            {showAll ? 'Hide Genres' : 'Explore All Genres'}
+          <button onClick={() => setShowAll(!showAll)}>
+            {showAll ? "Hide Genres" : "Explore All Genres"}
           </button>
         </KeyButton>
       </div>

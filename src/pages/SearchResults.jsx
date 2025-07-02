@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import axiosInstance from '../api/axios/axiosInstance';
-import { SEARCH_BOOKS_BY_QUERY } from '../api/apis';
-import toast from 'react-hot-toast';
-import BooksContainer from '../components/BooksContainer';
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import axiosInstance from "../api/axios/axiosInstance";
+import { SEARCH_BOOKS_BY_QUERY } from "../api/apis";
+import toast from "react-hot-toast";
+import BooksContainer from "../components/BooksContainer";
 
 const SearchResults = () => {
   const { search } = useLocation();
   const queryParams = new URLSearchParams(search);
-  const query = queryParams.get('query');
+  const query = queryParams.get("query");
 
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -29,7 +29,7 @@ const SearchResults = () => {
         }
       } catch (error) {
         toast.error("Failed to fetch search results");
-        console.error("Error fetching books:", error);
+        // console.error("Error fetching books:", error);
       } finally {
         setLoading(false);
       }
@@ -45,7 +45,7 @@ const SearchResults = () => {
       <h2 className="text-xl font-bold mb-4">Search Results for: {query}</h2>
       {books.length > 0 ? (
         <div>
-            <BooksContainer books={books} />
+          <BooksContainer books={books} />
         </div>
       ) : (
         <p>No books found.</p>

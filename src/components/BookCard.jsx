@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import BookModal from './BookModal';
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import BookModal from "./BookModal";
 
 const BookCard = ({
   title,
@@ -32,9 +33,23 @@ const BookCard = ({
     id,
   };
 
+  const cardVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.5, ease: "easeOut" },
+    },
+    exit: { opacity: 0, y: 50, transition: { duration: 0.3, ease: "easeIn" } },
+  };
+
   return (
     <>
-      <div
+      <motion.div
+        variants={cardVariants}
+        initial="hidden"
+        animate="visible"
+        exit="exit"
         onClick={() => setModalOpen(true)}
         className="group relative w-[180px] sm:w-[250px] h-[300px] sm:h-[365px] rounded-[14px] overflow-hidden flex flex-col items-center justify-center z-30 transition-all duration-300 transform shadow-[10px_10px_30px_#bebebe,-10px_-10px_30px_#ffffff] hover:shadow-[20px_20px_60px_#bebebe,-20px_-20px_60px_#ffffff] hover:scale-105 cursor-pointer"
       >
@@ -53,29 +68,37 @@ const BookCard = ({
               className="w-[100px] sm:w-[125.831px] h-[155px] sm:h-[195px] object-cover mx-auto rounded shadow mb-2 sm:mb-3"
             />
           )}
-          <h2 className="text-base sm:text-[1.3rem] font-semibold truncate">{title}</h2>
+          <h2 className="text-base sm:text-[1.3rem] font-semibold truncate">
+            {title}
+          </h2>
           <p className="text-xs sm:text-sm text-gray-600">{author}</p>
           <p className="text-[10px] sm:text-[11px] text-gray-500">{language}</p>
 
           {/* Rating & Genre */}
           <div className="text-xs sm:text-[12px] mt-1 text-gray-600 flex justify-between w-full px-2">
-            <span>⭐ {rating || 'N/A'}</span>
+            <span>⭐ {rating || "N/A"}</span>
             <span className="bg-gray-400 px-2 sm:px-4 text-xs rounded-md text-white font-semibold">
-              {genre || 'General'}
+              {genre || "General"}
             </span>
           </div>
 
           {/* Price and Availability */}
           <div className="flex justify-between mt-2 w-full px-3 sm:px-5 gap-3 sm:gap-10">
-            <span className="text-xs sm:text-sm text-red-600 font-semibold">₹ {price}</span>
+            <span className="text-xs sm:text-sm text-red-600 font-semibold">
+              ₹ {price}
+            </span>
             {isAvailable ? (
-              <span className="text-xs sm:text-sm font-semibold text-validated-green">Available</span>
+              <span className="text-xs sm:text-sm font-semibold text-validated-green">
+                Available
+              </span>
             ) : (
-              <span className="text-xs sm:text-sm font-semibold text-red-900">Sold Out</span>
+              <span className="text-xs sm:text-sm font-semibold text-red-900">
+                Sold Out
+              </span>
             )}
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Modal */}
       {isModalOpen && (

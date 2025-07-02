@@ -26,7 +26,7 @@ const MyBooks = () => {
         toast.error("Failed to fetch books");
       }
     } catch (error) {
-      console.error("Error fetching books:", error);
+      // console.error("Error fetching books:", error);
       setError("Server not available. Please try again later.");
       toast.error(error?.response?.data?.message || "Failed to fetch books");
     } finally {

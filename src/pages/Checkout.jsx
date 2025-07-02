@@ -1,10 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { useNavigate, useParams } from 'react-router-dom';
-import axiosInstance from '../api/axios/axiosInstance';
-import { CREATE_ORDER, GET_BOOK_BY_ID, UPDATE_ATTEMPTED_PURCHASES, VERIFY_PAYMENT } from '../api/apis';
-import toast from 'react-hot-toast';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate, useParams } from "react-router-dom";
+import axiosInstance from "../api/axios/axiosInstance";
+import {
+  CREATE_ORDER,
+  GET_BOOK_BY_ID,
+  UPDATE_ATTEMPTED_PURCHASES,
+  VERIFY_PAYMENT,
+} from "../api/apis";
+import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
 
 const Checkout = () => {
   // 1. === STATE & HOOKS ===
@@ -12,7 +17,7 @@ const Checkout = () => {
   const [book, setBook] = useState(null);
   const [loading, setLoading] = useState(false);
   const [orderId, setOrderId] = useState(null); // Order ID from backend
-  const navigate = useNavigate();  
+  const navigate = useNavigate();
   const user = useSelector((state) => state.auth.user);
 
   const {
@@ -30,7 +35,7 @@ const Checkout = () => {
         toast.success("Book fetched successfully");
       }
     } catch (error) {
-      console.error("Error while fetching book:", error);
+      // console.error("Error while fetching book:", error);
       toast.error(error?.response?.data?.message || "Server error");
       navigate(-1);
     }
@@ -89,11 +94,10 @@ const Checkout = () => {
         },
       },
     };
-  
+
     const rzp = new window.Razorpay(options);
     rzp.open();
   };
-  
 
   const verifyPayment = async (response, orderId) => {
     try {
@@ -110,10 +114,9 @@ const Checkout = () => {
         toast.error("Payment verification failed.");
       }
     } catch (err) {
-      console.error("Verification error:", err);
+      // console.error("Verification error:", err);
       toast.error("Error verifying payment.");
-    }
-    finally {
+    } finally {
       setLoading(false);
     }
   };
@@ -131,45 +134,67 @@ const Checkout = () => {
       openRazorpay(orderData, formData);
     } catch (error) {
       setLoading(false);
-      console.error("Order creation error:", error);
+      // console.error("Order creation error:", error);
       toast.error(error?.response?.data?.message || "Server error");
-    } 
+    }
   };
-
 
   // Updating the attempted purchases for analytics
   useEffect(() => {
-    const updateAttemptedPurchases = async ()=> {
+    const updateAttemptedPurchases = async () => {
       try {
-        const response = await axiosInstance.put(`${UPDATE_ATTEMPTED_PURCHASES}/${bookId}`);
-        console.log(bookId);
+        const response = await axiosInstance.put(
+          `${UPDATE_ATTEMPTED_PURCHASES}/${bookId}`
+        );
+        // console.log(bookId);
+      } catch (error) {
+        // console.log("Error while updating attempted purchases for anyalytics : " , error);
       }
-      catch(error) {
-        console.log("Error while updating attempted purchases for anyalytics : " , error);
-      }
-    }
+    };
 
     updateAttemptedPurchases();
-  } , []);
-
+  }, []);
 
   // 5. === RENDER ===
   if (!book) return <div className="text-center mt-10">Loading...</div>;
 
   return (
-    <form  onSubmit={handleSubmit(onSubmit)}className="container mx-auto my-8 px-4 flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-12">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="container mx-auto my-8 px-4 flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-12"
+    >
       {/* Left Side: Form */}
       <div className="w-full md:w-1/2 space-y-6">
         <h2 className="text-2xl font-semibold mb-6">Checkout</h2>
 
-        <div className="space-y-6" >
+        <div className="space-y-6">
           {[
-            { label: "Full Name", name: "fullName", type: "text", required: true },
+            {
+              label: "Full Name",
+              name: "fullName",
+              type: "text",
+              required: true,
+            },
             { label: "Address", name: "address", type: "text", required: true },
             { label: "City", name: "city", type: "text", required: true },
-            { label: "Postal Code", name: "postalCode", type: "text", required: true },
-            { label: "Phone Number", name: "phone", type: "tel", required: true },
-            { label: "Email Address", name: "email", type: "email", required: true },
+            {
+              label: "Postal Code",
+              name: "postalCode",
+              type: "text",
+              required: true,
+            },
+            {
+              label: "Phone Number",
+              name: "phone",
+              type: "tel",
+              required: true,
+            },
+            {
+              label: "Email Address",
+              name: "email",
+              type: "email",
+              required: true,
+            },
           ].map(({ label, name, type, required }) => (
             <div key={name}>
               <label className="block text-sm font-medium">{label}</label>
@@ -183,8 +208,6 @@ const Checkout = () => {
               )}
             </div>
           ))}
-
-          
         </div>
       </div>
 
@@ -196,34 +219,43 @@ const Checkout = () => {
         </div>
 
         <div className="px-4 py-2 bg-gray-100 rounded-lg border flex flex-wrap items-center justify-center gap-4">
-          <img src="/images/payment/razorpay.png" alt="Razorpay" className="h-8 bg-transparent" />
+          <img
+            src="/images/payment/razorpay.png"
+            alt="Razorpay"
+            className="h-8 bg-transparent"
+          />
           <img src="/images/payment/upi.png" alt="UPI" className="h-8" />
           <img src="/images/payment/rupay.png" alt="Rupay" className="h-8" />
           <img src="/images/payment/card.png" alt="Card" className="h-8" />
         </div>
 
         <button
-            type="submit"
-            disabled={loading}
-            className={`w-full py-3 text-white font-semibold rounded-md transition ${
-              loading
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-green-600 hover:bg-green-700"
-            }`}
-          >
-            {loading ? (
-              <span className="flex items-center justify-center gap-2">
-                <span className="material-icons"></span> Processing...
-              </span>
-            ) : (
-              "Confirm Payment"
-            )}
-          </button>
+          type="submit"
+          disabled={loading}
+          className={`w-full py-3 text-white font-semibold rounded-md transition ${
+            loading
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-green-600 hover:bg-green-700"
+          }`}
+        >
+          {loading ? (
+            <span className="flex items-center justify-center gap-2">
+              <span className="material-icons"></span> Processing...
+            </span>
+          ) : (
+            "Confirm Payment"
+          )}
+        </button>
 
         {/* Show message only when loading is true */}
         {loading && (
           <div className="mt-6 bg-yellow-100 text-yellow-800 p-4 rounded-lg text-center">
-            <p><strong>Payment is being processed. Please do not refresh or navigate away from this page.</strong></p>
+            <p>
+              <strong>
+                Payment is being processed. Please do not refresh or navigate
+                away from this page.
+              </strong>
+            </p>
           </div>
         )}
       </div>
