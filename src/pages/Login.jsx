@@ -35,7 +35,8 @@ const Login = () => {
         dispatch(setUser(response.data.user));
         dispatch(setIsLoggedIn(true));
 
-        location.pathname === "/login" ? navigate("/dashboard") : navigate(-1);
+        // location.pathname === "/login" ? navigate("/dashboard") : navigate(-1);
+        navigate(-1);
       }
     } catch (error) {
       // console.log("error while logging in", error);
