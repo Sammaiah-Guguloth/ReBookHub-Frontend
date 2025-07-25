@@ -15,10 +15,13 @@ import Tooltip from './Tooltip';
     return (
       <footer className="w-full mt-10 bg-white text-gray-700 shadow-inner font-serif">
         {/* Social media bar */}
-        <div className="w-full relative h-16 bg-gray-500 border-b-2 rounded-sm text-white px-4 py-3 flex flex-col md:flex-row items-center gap-3">
-          <span className="text-center md:text-left text-sm font-medium">
-            Connect with ReBook Hub on social networks:
-          </span>
+        <div className="w-full relative md:min-h-16 bg-gray-500 border-b-2 rounded-sm text-white px-4 py-3 flex flex-col md:flex-row items-center gap-4 md:gap-0">
+          <div className='w-full sm:w-1/2'>
+            <p className='font-medium text-sm text-center md:text-left'>Connect with ReBook Hub on social networks:</p>
+          </div>
+          <div className='w-full sm:w-1/2 flex justify-center md:justify-end'>
+           <Tooltip />
+           </div>
           {/* <div className="flex gap-4 text-lg">
             <a href="#" className="hover:text-gray-200 transition"><FaFacebookF /></a>
             <a href="#" className="hover:text-gray-200 transition"><FaTwitter /></a>
@@ -27,9 +30,7 @@ import Tooltip from './Tooltip';
             <a href="#" className="hover:text-gray-200 transition"><FaLinkedin /></a>
             <a href="#" className="hover:text-gray-200 transition"><FaGithub /></a>
           </div> */}
-           <div  className='absolute right-[12rem]'>
-           <Tooltip />
-           </div>
+           
         </div>
 
        
